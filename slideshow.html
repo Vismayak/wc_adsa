@@ -1,33 +1,132 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style>
-.mySlides {display:none;}
+* {box-sizing:border-box}
+body {font-family: Verdana,sans-serif;margin:0}
+.mySlides {display:none}
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+}
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+.active, .dot:hover {
+  background-color: #717171;
+}
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
 </style>
 <body>
-<h2 class="w3-center">Automatic Slideshow</h2>
-<img class="mySlides w3-animate-fading" src="img/beaver_brook_scenery__hdr_sjpg4120.jpg" alt="image" width="800" height="600">
-<img class="mySlides w3-animate-fading" src="img/lol.jpg" alt="image" width="800" height="600">
-<img class="mySlides w3-animate-fading" src="img/team-1.jpg" alt="image" width="800" height="600">
-<img class="mySlides w3-animate-fading" src="img/team-2.jpg" alt="image" width="800" height="600">
-<img class="mySlides w3-animate-fading" src="img/team-3.jpg" alt="image" width="800" height="600">
-<img class="mySlides w3-animate-fading" src="img/team-4.jpg" alt="image" width="800" height="600">
+<div class="slideshow-container">
+<div class="mySlides fade">
+  <div class="numbertext">1 / 3</div>
+  <img src="img/lol.jpg" style="width:100%">
+  <!--<div class="text">Caption Text</div>-->
+</div>
+<div class="mySlides fade">
+  <div class="numbertext">2 / 3</div>
+  <img src="img/team-2.jpg" style="width:100%">
+  <!--<div class="text">Caption Two</div>-->
+</div>
+<div class="mySlides fade">
+  <div class="numbertext">3 / 3</div>
+  <img src="img/item2.png" style="width:100%">
+  <!--<div class="text">Caption Three</div>-->
+</div>
+<a class="prev" onclick="plusSlides(-1)"><</a>
+<a class="next" onclick="plusSlides(1)">></a>
+</div>
+<br>
 <script>
 var slideIndex = 0;
-carousel();
-
-function carousel() {
+var timeouts = [];
+showSlides_auto();
+function plusSlides(n) {
+  showSlides_manu(slideIndex += n);
+}
+function showSlides_manu(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
+  for(var i = 0; i < timeouts.length; i++)
+    clearTimeout(timeouts[i]);
+  timeouts = [];
+  timeouts.push(setTimeout(showSlides_auto, 8000));
+}
+function showSlides_auto() {
     var i;
-    var x = document.getElementsByClassName("mySlides");
-    for (i = 0; i < x.length; i++) {
-      x[i].style.display = "none"; 
+    var slides = document.getElementsByClassName("mySlides");
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";
     }
     slideIndex++;
-    if (slideIndex > x.length) {slideIndex = 1} 
-    x[slideIndex-1].style.display = "block"; 
-    setTimeout(carousel, 10000); // Change image every 2 seconds
+    if (slideIndex> slides.length) {slideIndex = 1}
+    slides[slideIndex-1].style.display = "block";
+    timeouts[0] = setTimeout(showSlides_auto, 5000); // Change image every 2 seconds
 }
 </script>
 </body>
